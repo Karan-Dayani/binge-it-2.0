@@ -1,26 +1,83 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0f14; /* Deep Space */
+  --bg-header: #11161c; /* Obsidian Veil */
+  --bg-card: #1a1f27; /* Charcoal Fog */
+
+  --accentP: #7f5af0; /* Electric Indigo */
+  --accentP-hover: #9a77f9;
+  --accentP-active: #6240e3;
+
+  --accentS: #2cb67d; /* Aurora Green */
+  --accentS-hover: #44c98f;
+  --accentS-active: #22996b;
+
+  --textP: #f1f1f1; /* Ghost White */
+  --textS: #94a1b2; /* Mist Gray */
+
+  --success: #3ff3a9; /* Mint Pulse */
+  --success-hover: #62f5b8;
+  --error: #ff6b81; /* Neon Blush */
+  --error-hover: #ff8c9c;
+
+  --added: var(--success);
+  --added-hover: var(--success-hover);
+  --removed: var(--error);
+  --removed-hover: var(--error-hover);
+
+  --border: #2a2e37; /* Subtle border */
+  --overlay: rgba(11, 15, 20, 0.85); /* For modals */
+  --scrollbar: #2e3440;
+  --scrollbar-hover: #3b4252;
+
+  --transition-fast: 0.2s ease;
+  --transition-slow: 0.4s ease;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-header: var(--bg-header);
+  --color-card: var(--bg-card);
+
+  --color-accent-primary: var(--accentP);
+  --color-accent-primary-hover: var(--accentP-hover);
+  --color-accent-primary-active: var(--accentP-active);
+
+  --color-accent-secondary: var(--accentS);
+  --color-accent-secondary-hover: var(--accentS-hover);
+  --color-accent-secondary-active: var(--accentS-active);
+
+  --color-text-primary: var(--textP);
+  --color-text-secondary: var(--textS);
+
+  --color-success: var(--success);
+  --color-success-hover: var(--success-hover);
+  --color-error: var(--error);
+  --color-error-hover: var(--error-hover);
+
+  --color-added: var(--added);
+  --color-added-hover: var(--added-hover);
+  --color-removed: var(--removed);
+  --color-removed-hover: var(--removed-hover);
+
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-scrollbar: var(--scrollbar);
+  --color-scrollbar-hover: var(--scrollbar-hover);
+
+  --transition-fast: var(--transition-fast);
+  --transition-slow: var(--transition-slow);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--textP);
   font-family: Arial, Helvetica, sans-serif;
+}
+:root:has(.no-doc-scroll) {
+  overflow: hidden;
 }
