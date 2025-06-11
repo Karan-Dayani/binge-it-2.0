@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useSession, signIn } from "next-auth/react";
+
 import { IoMenu } from "react-icons/io5";
 import { BiMoviePlay } from "react-icons/bi";
 import { MdLiveTv, MdOutlineCollectionsBookmark } from "react-icons/md";
@@ -8,7 +10,8 @@ import { TbUserSquare } from "react-icons/tb";
 import { FiHome } from "react-icons/fi";
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   console.log(isOpen);
   return (
@@ -44,10 +47,20 @@ const Navigation = () => {
                 </Link>
               </li>
               <li className="hover:text-accent-primary-hover cursor-pointer">
-                <Link href={"/profile"} className="flex items-center gap-1">
-                  <TbUserSquare className="size-6" />
-                  Profile
-                </Link>
+                {session ? (
+                  <Link href={"/profile"} className="flex items-center gap-1">
+                    <TbUserSquare className="size-6" />
+                    Profile
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => signIn()}
+                    className="flex items-center gap-1"
+                  >
+                    <TbUserSquare className="size-6" />
+                    Profile
+                  </button>
+                )}
               </li>
             </ul>
           </div>
