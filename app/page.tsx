@@ -1,48 +1,14 @@
-export default function Home() {
+import Carousel from "./(components)/Carousel";
+import { getTrending } from "./api/api";
+
+export default async function Home() {
+  const data = await getTrending();
+  console.log(data.results);
+
   return (
-    <div className="p-5">
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
-      <h1 className="text-2xl">Hello Everynian</h1>
+    <div>
+      <Carousel data={data.results} />
+      {/* <h1>Hello World!</h1> */}
     </div>
   );
 }
