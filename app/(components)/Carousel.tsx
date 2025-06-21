@@ -1,23 +1,16 @@
 "use client";
+import { item } from "@/interfaces";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-type Movie = {
-  id: number;
-  backdrop_path?: string;
-  poster_path?: string;
-  title?: string;
-  name?: string;
-  overview?: string;
-};
-
-interface CarouselProps {
-  data: Movie[];
+export default function Carousel({
+  data,
+  interval = 5000,
+}: {
+  data: item[];
   interval?: number;
-}
-
-export default function Carousel({ data, interval = 5000 }: CarouselProps) {
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const timerId = useRef<NodeJS.Timeout | null>(null);
 
@@ -73,7 +66,7 @@ export default function Carousel({ data, interval = 5000 }: CarouselProps) {
           }}
         >
           {/* Black overlay */}
-          <div className="hidden md:block absolute inset-0 bg-black/50" />
+          <div className=" absolute inset-0 bg-black/30 md:bg-black/50" />
 
           {/* Content */}
           <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between h-full px-6 md:px-20 py-10 text-white">
