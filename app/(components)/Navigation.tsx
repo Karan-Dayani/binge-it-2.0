@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 
-import { IoMenu } from "react-icons/io5";
+import { IoMenu, IoSearchSharp } from "react-icons/io5";
 import { BiMoviePlay } from "react-icons/bi";
 import { MdLiveTv, MdOutlineCollectionsBookmark } from "react-icons/md";
 import { TbUserSquare } from "react-icons/tb";
@@ -29,7 +29,16 @@ const Navigation = () => {
           <div className="hidden md:block">
             <ul className="flex space-x-6 text-lg text-accent-primary">
               <li className="hover:text-accent-primary-hover cursor-pointer">
-                <Link href={"/movies"} className="flex items-center gap-1">
+                <Link href={"/search"} className="flex items-center gap-1">
+                  <IoSearchSharp className="size-6" />
+                  Search
+                </Link>
+              </li>
+              <li className="hover:text-accent-primary-hover cursor-pointer">
+                <Link
+                  href={"/movies?page=1"}
+                  className="flex items-center gap-1"
+                >
                   <BiMoviePlay className="size-6" />
                   Movies
                 </Link>
@@ -75,6 +84,16 @@ const Navigation = () => {
         <ul className="flex flex-col space-y-5 text-lg text-accent-primary">
           <li className="hover:text-accent-primary-hover cursor-pointer">
             <Link
+              href={"/search"}
+              className="flex items-center gap-1"
+              onClick={() => setIsOpen(false)}
+            >
+              <IoSearchSharp className="size-6" />
+              Search
+            </Link>
+          </li>
+          <li className="hover:text-accent-primary-hover cursor-pointer">
+            <Link
               href={"/"}
               className="flex items-center gap-1"
               onClick={() => setIsOpen(false)}
@@ -85,7 +104,7 @@ const Navigation = () => {
           </li>
           <li className="hover:text-accent-primary-hover cursor-pointer">
             <Link
-              href={"/movies"}
+              href={"/movies?page=1"}
               className="flex items-center gap-1"
               onClick={() => setIsOpen(false)}
             >

@@ -1,11 +1,12 @@
+import { data } from "@/interfaces";
 import Carousel from "./(components)/Carousel";
 import Ticker from "./(components)/Ticker";
-import { getPopularMovies, getPopularShows, getTrending } from "./api/api";
+import { getMovies, getShows, getTrending } from "./api/api";
 
 export default async function Home() {
-  const trending = await getTrending();
-  const movies = await getPopularMovies(1);
-  const shows = await getPopularShows(1);
+  const trending: data = await getTrending();
+  const movies: data = await getMovies(1);
+  const shows: data = await getShows(1);
 
   return (
     <div className="pb-10">

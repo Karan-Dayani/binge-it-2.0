@@ -35,13 +35,12 @@
   --transition-slow: 0.4s ease;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-:root::-webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-:root {
+.no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }

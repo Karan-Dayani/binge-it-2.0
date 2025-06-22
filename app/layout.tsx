@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
-      <html lang="en">
+      <html lang="en" className="no-scrollbar overflow-x-clip">
         <body className={`${inter.className} antialiased`}>
           <Navigation />
           <div className="pt-16">{children}</div>
