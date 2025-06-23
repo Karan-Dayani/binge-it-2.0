@@ -13,7 +13,6 @@ const Navigation = () => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  console.log(isOpen);
   return (
     <>
       <div className="h-16 w-full p-4 bg-header fixed z-99">

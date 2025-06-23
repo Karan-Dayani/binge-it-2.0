@@ -86,3 +86,14 @@ export async function getGenres(type: string) {
     throw error;
   }
 }
+
+export async function getSearchResults(query: string) {
+  const url = `https://api.themoviedb.org/3/search/multi?query=${query}`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -13,7 +13,6 @@ export default async function TvShows({
   const genre = searchParams?.genres;
   const data: data = await getShows(page, genre);
   const genres: { genres: genre[] } = await getGenres("tv");
-  console.log(data);
 
   return (
     <div className="px-4 sm:px-10 pt-6 pb-10">

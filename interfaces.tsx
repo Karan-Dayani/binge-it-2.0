@@ -7,6 +7,9 @@ export type item = {
   overview?: string;
   release_date?: string;
   first_air_date?: string;
+  profile_path?: string;
+  known_for_department?: string;
+  media_type?: string;
 };
 
 export type genre = {
