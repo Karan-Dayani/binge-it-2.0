@@ -5,7 +5,7 @@ import { useSession, signIn } from "next-auth/react";
 
 import { IoMenu, IoSearchSharp } from "react-icons/io5";
 import { BiMoviePlay } from "react-icons/bi";
-import { MdLiveTv, MdOutlineCollectionsBookmark } from "react-icons/md";
+import { MdLiveTv } from "react-icons/md";
 import { TbUserSquare } from "react-icons/tb";
 import { FiHome } from "react-icons/fi";
 
@@ -48,12 +48,7 @@ const Navigation = () => {
                   TV Shows
                 </Link>
               </li>
-              <li className="hover:text-accent-primary-hover cursor-pointer">
-                <Link href={"/collections"} className="flex items-center gap-1">
-                  <MdOutlineCollectionsBookmark className="size-6" />
-                  Collections
-                </Link>
-              </li>
+
               <li className="hover:text-accent-primary-hover cursor-pointer">
                 {session ? (
                   <Link href={"/profile"} className="flex items-center gap-1">
@@ -121,16 +116,7 @@ const Navigation = () => {
               TV Shows
             </Link>
           </li>
-          <li className="hover:text-accent-primary-hover cursor-pointer">
-            <Link
-              href={"/collections"}
-              className="flex items-center gap-1"
-              onClick={() => setIsOpen(false)}
-            >
-              <MdOutlineCollectionsBookmark className="size-6" />
-              Collections
-            </Link>
-          </li>
+
           <li className="hover:text-accent-primary-hover cursor-pointer">
             <Link
               href={"/profile"}
