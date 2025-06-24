@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./(components)/Navigation";
 import SessionWrapper from "./(components)/SessionWrapper";
+import PageTransition from "./(components)/PageTransition";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <html lang="en" className="no-scrollbar overflow-x-clip">
         <body className={`${inter.className} antialiased`}>
           <Navigation />
-          <div className="pt-16">{children}</div>
+          <PageTransition>
+            <div className="pt-16">{children}</div>
+          </PageTransition>
         </body>
       </html>
     </SessionWrapper>
