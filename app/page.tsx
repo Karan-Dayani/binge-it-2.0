@@ -7,14 +7,15 @@ export default async function Home() {
   const trending: data = await getTrending();
   const movies: data = await getMovies(1);
   const shows: data = await getShows(1);
+  console.log(movies);
 
   return (
     <div className="pb-10">
       <Carousel data={trending.results} />
       <h1 className="text-accent-primary text-2xl px-10 py-5">Movies</h1>
-      <Ticker items={movies.results} name="movies" />
+      <Ticker items={movies.results} name="movie" />
       <h1 className="text-accent-primary text-2xl px-10 py-5">Shows</h1>
-      <Ticker items={shows.results} name="tvShows" />
+      <Ticker items={shows.results} name="tv" />
     </div>
   );
 }

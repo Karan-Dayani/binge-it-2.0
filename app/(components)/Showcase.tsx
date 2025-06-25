@@ -5,8 +5,9 @@ import Image from "next/image";
 import { data } from "@/interfaces";
 import { motion } from "framer-motion";
 import { IoBookmarksOutline } from "react-icons/io5";
+import Link from "next/link";
 
-const Showcase = ({ data }: { data: data }) => {
+const Showcase = ({ data, location }: { data: data; location: string }) => {
   const fallbackSrc = "/fallback.jpeg";
   const [fallbackMap, setFallbackMap] = useState<Record<number, boolean>>({});
 
@@ -31,7 +32,9 @@ const Showcase = ({ data }: { data: data }) => {
             item.known_for_department ||
             "Unknown Date";
           const isMedia =
-            item.media_type === "movie" || item.media_type === "tv";
+            location === "search"
+              ? item.media_type === "movie" || item.media_type === "tv"
+              : true;
 
           return (
             <motion.div
@@ -49,42 +52,44 @@ const Showcase = ({ data }: { data: data }) => {
               whileHover={{ scale: 1.05 }}
               className="relative bg-gray-900 text-white overflow-hidden shadow-md w-[140px] sm:w-[160px] md:w-[180px] hover:shadow-xl transition duration-300"
             >
-              {/* Poster */}
-              <div className="relative w-full aspect-[2/3]">
-                <Image
-                  src={
-                    showFallback
-                      ? fallbackSrc
-                      : `https://image.tmdb.org/t/p/original/${
-                          item.poster_path || item.profile_path
-                        }`
-                  }
-                  alt={(item.title as string) || (item.name as string)}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 45vw, 180px"
-                  onError={() => handleError(item.id)}
-                />
-              </div>
+              <Link href={`/details/${item.media_type || location}/${item.id}`}>
+                {/* Poster */}
+                <div className="relative w-full aspect-[2/3]">
+                  <Image
+                    src={
+                      showFallback
+                        ? fallbackSrc
+                        : `https://image.tmdb.org/t/p/original/${
+                            item.poster_path || item.profile_path
+                          }`
+                    }
+                    alt={(item.title as string) || (item.name as string)}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 45vw, 180px"
+                    onError={() => handleError(item.id)}
+                  />
+                </div>
 
-              {/* Content */}
-              <div className="p-2 sm:p-3">
-                <h2 className="text-xs sm:text-sm text-text-primary font-semibold leading-tight truncate">
-                  {title}
-                </h2>
-                {secondaryText}
-              </div>
+                {/* Content */}
+                <div className="p-2 sm:p-3">
+                  <h2 className="text-xs sm:text-sm text-text-primary font-semibold leading-tight truncate">
+                    {title}
+                  </h2>
+                  {secondaryText}
+                </div>
 
-              {/* Add Button (only if it's a movie or TV) */}
-              {isMedia && (
-                <button
-                  onClick={() => handleAddToList(item.id)}
-                  className="absolute bottom-0 right-0 p-2 bg-accent-primary text-white hover:bg-accent-primary-hover transition"
-                  aria-label="Add to list"
-                >
-                  <IoBookmarksOutline className="size-4 stroke-3" />
-                </button>
-              )}
+                {/* Add Button (only if it's a movie or TV) */}
+                {isMedia && (
+                  <button
+                    onClick={() => handleAddToList(item.id)}
+                    className="absolute bottom-0 right-0 p-2 bg-accent-primary text-white hover:bg-accent-primary-hover transition"
+                    aria-label="Add to list"
+                  >
+                    <IoBookmarksOutline className="size-4 stroke-3" />
+                  </button>
+                )}
+              </Link>
             </motion.div>
           );
         })}

@@ -90,7 +90,7 @@ export default function Carousel({
                 {movie?.overview}
               </p>
               <Link
-                href={"#"}
+                href={"/details/" + movie?.media_type + "/" + movie?.id}
                 className="inline-block bg-accent-primary text-black px-6 py-2 font-medium hover:bg-accent-primary-hover transition shadow-lg/50"
               >
                 More...

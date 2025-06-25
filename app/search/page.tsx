@@ -22,7 +22,7 @@ export default async function Search({
             <span className="text-white">{query}</span>&quot;
           </div>
         ) : (
-          <Showcase data={result} />
+          <Showcase data={result} location="search" />
         )
       ) : (
         <div className="text-center text-gray-500 mt-10">

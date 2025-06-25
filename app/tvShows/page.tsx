@@ -21,7 +21,7 @@ export default async function TvShows({
         <GenreDropdown genres={genres.genres} />
       </div>
 
-      <Showcase data={data} />
+      <Showcase data={data} location="tv" />
       <Pagination CurrPage={page} />
     </div>
   );

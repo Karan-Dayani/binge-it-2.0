@@ -97,3 +97,90 @@ export async function getSearchResults(query: string) {
     throw error;
   }
 }
+
+export async function getMovieDetails(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getTvDetails(id: string) {
+  const url = `https://api.themoviedb.org/3/tv/${id}`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getPersonDetails(id: string) {
+  const url = `https://api.themoviedb.org/3/person/${id}`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getMovieCredits(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/credits`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getTvCredits(id: string) {
+  const url = `https://api.themoviedb.org/3/tv/${id}/credits`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getMovieRecommendations(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/recommendations`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getTvRecommendations(id: string) {
+  const url = `https://api.themoviedb.org/3/tv/${id}/recommendations`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function getPersonCredits(id: string) {
+  const url = `https://api.themoviedb.org/3/person/${id}/combined_credits`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

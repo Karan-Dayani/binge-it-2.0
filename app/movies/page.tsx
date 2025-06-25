@@ -21,7 +21,7 @@ export default async function MoviesPage({
         <GenreDropdown genres={genres.genres} />
       </div>
 
-      <Showcase data={data} />
+      <Showcase data={data} location="movie" />
       <Pagination CurrPage={page} />
     </div>
   );
