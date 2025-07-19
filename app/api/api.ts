@@ -184,3 +184,25 @@ export async function getPersonCredits(id: string) {
     throw error;
   }
 }
+
+export async function getMovieTrailer(id: string) {
+  const url = `https://api.themoviedb.org/3/movie/${id}/videos`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getTvTrailer(id: string) {
+  const url = `https://api.themoviedb.org/3/tv/${id}/videos`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

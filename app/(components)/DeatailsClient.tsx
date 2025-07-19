@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { cast_crew, credits, item } from "@/interfaces";
+import { cast_crew, credits, item, trailer } from "@/interfaces";
 import { IoStar } from "react-icons/io5";
 import { useState } from "react";
 import Link from "next/link";
@@ -12,13 +12,20 @@ export default function DetailCardClient({
   mediaType,
   credits,
   recomendations,
+  trailer,
 }: {
   data: item;
   mediaType: string;
   credits?: credits;
   recomendations?: item[];
+  trailer?: trailer[];
 }) {
   const isPerson = mediaType === "person";
+
+  const [trailerOpen, setTrailerOpen] = useState(false);
+  const officialTrailer: trailer = (trailer ?? []).filter(
+    (t) => t.name === "Official Trailer"
+  )[0];
 
   const title = data.title || data.name;
   const poster = data.poster_path || data.profile_path;
@@ -58,7 +65,6 @@ export default function DetailCardClient({
       return !isSelf && !isEmptyChar && !isTalkShow && !isShortRole;
     })
     .sort((a, b) => {
-      // Prefer higher vote count first, then popularity
       const aVote = a.vote_count ?? 0;
       const bVote = b.vote_count ?? 0;
       if (bVote !== aVote) return bVote - aVote;
@@ -67,7 +73,6 @@ export default function DetailCardClient({
       return bPop - aPop;
     });
   const uniqueMap = new Map<string, cast_crew>();
-  // Avoid duplicates by media_type + title
   if (filtered) {
     for (const item of filtered) {
       const key = `${item.media_type}_${item.title || item.name}`;
@@ -78,103 +83,17 @@ export default function DetailCardClient({
   }
   const top = Array.from(uniqueMap.values()).slice(0, 7);
 
-  //   return (
-  //     <div className="px-4 py-8 max-w-6xl mx-auto">
-  //       <motion.div
-  //         initial={{ opacity: 0, y: 30 }}
-  //         animate={{ opacity: 1, y: 0 }}
-  //         transition={{ duration: 0.6, ease: "easeOut" }}
-  //         className="grid md:grid-cols-2 gap-8"
-  //       >
-  //         {/* Image */}
-  //         <div className="relative w-full aspect-[2/3] md:max-w-[360px] mx-auto">
-  //           <Image
-  //             src={`https://image.tmdb.org/t/p/original${poster}`}
-  //             alt={title as string}
-  //             fill
-  //             className="object-cover shadow-lg"
-  //             sizes="(max-width: 768px) 100vw, 360px"
-  //             priority
-  //           />
-  //         </div>
-
-  //         {/* Info */}
-  //         <div className="flex flex-col justify-between">
-  //           <div>
-  //             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-  //               {title}
-  //             </h1>
-
-  //             {data.tagline && (
-  //               <p className="text-accent-primary italic mt-2 text-base">
-  //                 &quot;{data.tagline}&quot;
-  //               </p>
-  //             )}
-
-  //             {genres && (
-  //               <p className="mt-4 text-sm text-text-secondary">
-  //                 <strong>Genres:</strong> {genres}
-  //               </p>
-  //             )}
-
-  //             {releaseDate && (
-  //               <p className="text-sm text-text-secondary mt-1">
-  //                 <strong>{isPerson ? "Born" : "Release Date"}:</strong>{" "}
-  //                 {releaseDate.split("-").reverse().join("/")}
-  //               </p>
-  //             )}
-
-  //             {data.runtime && (
-  //               <p className="text-sm text-text-secondary mt-1">
-  //                 <strong>Runtime:</strong> {data.runtime} mins
-  //               </p>
-  //             )}
-
-  //             {!isPerson && (
-  //               <div className="flex items-center gap-2 mt-4">
-  //                 <IoStar className="text-yellow-400 text-xl" />
-  //                 <span className="text-white font-medium text-lg">{vote}</span>
-  //                 <span className="text-sm text-text-secondary">/ 10</span>
-  //               </div>
-  //             )}
-
-  //             {data.place_of_birth && isPerson && (
-  //               <p className="mt-2 text-sm text-text-secondary">
-  //                 <strong>Place of Birth:</strong> {data.place_of_birth}
-  //               </p>
-  //             )}
-  //           </div>
-
-  //           {data.homepage && (
-  //             <a
-  //               href={data.homepage}
-  //               target="_blank"
-  //               rel="noopener noreferrer"
-  //               className="inline-block mt-6 text-accent-primary hover:underline text-sm"
-  //             >
-  //               Visit Official Site
-  //             </a>
-  //           )}
-  //         </div>
-  //       </motion.div>
-
-  //       {/* Backdrop for person → skip; for media → show below on mobile */}
-  //       {!isPerson && backdrop && (
-  //         <div className="mt-10 md:hidden relative aspect-video w-full max-w-4xl mx-auto">
-  //           <Image
-  //             src={`https://image.tmdb.org/t/p/original${backdrop}`}
-  //             alt="Backdrop"
-  //             fill
-  //             className="object-cover rounded shadow-lg"
-  //             sizes="100vw"
-  //           />
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
   return (
     <>
-      <div className="md:hidden w-full flex justify-center">
+      {/* Mobile Image */}
+      <div
+        className={`md:hidden w-full flex justify-center ${
+          !isPerson ? "cursor-pointer relative" : ""
+        }`}
+        onClick={() => {
+          if (!isPerson) setTrailerOpen(true);
+        }}
+      >
         <Image
           src={`https://image.tmdb.org/t/p/original${
             isPerson ? poster : backdrop
@@ -187,12 +106,42 @@ export default function DetailCardClient({
           }`}
           priority
         />
+
+        {!isPerson && officialTrailer && (
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-14 h-14 text-white"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        )}
       </div>
+
       <div className="w-full flex items-center md:gap-10 p-5 md:p-10">
+        {/* Information */}
         <div className="w-full md:w-[70%] text-center md:text-left">
           <div className="mb-4">
-            <h1 className="font-bold text-[5vw] tracking-tight">{title}</h1>
-            <p className="text-lg text-accent-primary">{data.tagline}</p>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+              {/* Title */}
+              <h1 className="text-white font-extrabold text-[8vw] md:text-[5vw] leading-tight tracking-tight">
+                {title}
+              </h1>
+
+              {/* Add Button */}
+              {!isPerson && (
+                <button className="mt-2 md:mt-0 px-5 py-2 text-sm md:text-base font-medium bg-accent-primary text-black hover:bg-accent-primary-hover cursor-pointer">
+                  <span className="text-xl">+</span> Add to List
+                </button>
+              )}
+            </div>
+
+            <p className="text-md md:text-lg text-accent-primary">
+              {data.tagline}
+            </p>
             {mediaType === "movie" && director && (
               <p className="text-sm text-text-secondary">
                 Directed by <span className="font-medium">{director.name}</span>
@@ -238,28 +187,54 @@ export default function DetailCardClient({
             )}
           </div>
         </div>
+
+        {/* Desktop Image */}
         <div className="md:w-[30%]">
-          <div className="hidden md:block max-w-[360px] ">
-            <Image
-              src={`https://image.tmdb.org/t/p/original${poster}`}
-              alt={title as string}
-              width={360}
-              height={540}
-              className="object-cover shadow-lg w-full h-auto"
-              priority
-            />
+          <div
+            className={`hidden md:block max-w-[360px] ${
+              !isPerson && officialTrailer ? "cursor-pointer group" : ""
+            }`}
+            onClick={() => {
+              if (!isPerson) setTrailerOpen(true);
+            }}
+          >
+            <div className="relative w-full h-auto">
+              <Image
+                src={`https://image.tmdb.org/t/p/original${poster}`}
+                alt={title as string}
+                width={360}
+                height={540}
+                className="object-cover shadow-lg w-full h-auto"
+                priority
+              />
+
+              {!isPerson && officialTrailer && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-14 h-14 text-white"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Cast Section */}
       {!isPerson && (credits?.cast?.length ?? 0) > 0 && (
         <section className="my-16 px-4 sm:px-6 lg:px-12">
           <h2 className="text-2xl font-semibold text-white mb-6">Cast</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-h-96 md:max-h-none overflow-y-auto md:overflow-y-visible">
-            {credits?.cast.slice(0, 12).map((actor) => (
+            {credits?.cast.slice(0, 12).map((actor, i) => (
               <Link
                 href={`/details/person/${actor.id}`}
-                key={actor.id}
+                key={i}
                 className="flex items-center bg-card hover:bg-header overflow-hidden transition-colors duration-300 shadow-md"
               >
                 <div className="relative flex-shrink-0 w-28 h-40 overflow-hidden no-scrollbar">
@@ -287,19 +262,51 @@ export default function DetailCardClient({
           </div>
         </section>
       )}
-      {!isPerson && recomendations && (
+
+      {/* More recomendations section */}
+      {!isPerson && (recomendations?.length ?? 0) > 0 && (
         <section className="my-16 px-4 sm:px-6 lg:px-12">
           <h2 className="text-2xl font-semibold text-white mb-6">
             More like this
           </h2>
-          <Ticker items={recomendations} name={mediaType} more={false} />
+          <Ticker items={recomendations!} name={mediaType} more={false} />
         </section>
       )}
-      {isPerson && credits?.cast && (
+
+      {/* Person known for section */}
+      {isPerson && (credits?.cast?.length ?? 0) > 0 && (
         <section className="my-16 px-4 sm:px-6 lg:px-12">
           <h2 className="text-2xl font-semibold text-white mb-6">Known For</h2>
           <Ticker items={top} more={false} />
         </section>
+      )}
+
+      {/* Trailer Ifreame */}
+      {officialTrailer && trailerOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-auto no-doc-scroll"
+          onClick={() => setTrailerOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl aspect-video rounded-lg overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`https://www.youtube.com/embed/${officialTrailer.key}?autoplay=1`}
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Official Trailer"
+              className="w-full h-full"
+            ></iframe>
+
+            {/* <button
+              onClick={() => setTrailerOpen(false)}
+              className="absolute top-2 right-2 bg-black bg-opacity-60 hover:bg-opacity-90 p-2 rounded-full text-white text-lg transition"
+            >
+              ✕
+            </button> */}
+          </div>
+        </div>
       )}
     </>
   );

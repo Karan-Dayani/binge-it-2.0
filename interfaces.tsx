@@ -62,3 +62,16 @@ export type credits = {
   cast: cast_crew[];
   crew: cast_crew[];
 };
+
+export type trailer = {
+  id: string;
+  iso_639_1?: string;
+  iso_3166_1?: string;
+  name?: string;
+  key?: string;
+  site?: string;
+  size?: number;
+  type?: string;
+  official?: boolean;
+  published_at?: string;
+};
