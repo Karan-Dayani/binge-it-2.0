@@ -75,3 +75,32 @@ export type trailer = {
   official?: boolean;
   published_at?: string;
 };
+
+export type episodes = {
+  id: number;
+  air_date: string;
+  episode_number: number;
+  episode_type: string;
+  name: string;
+  overview: string;
+  production_code: string;
+  runtime: number;
+  season_number: number;
+  show_id: number;
+  still_path: string;
+  vote_average: number;
+  vote_count: number;
+  crew: cast_crew[];
+  guest_starts: cast_crew[];
+};
+
+export type season = {
+  id: number;
+  air_date: string;
+  episodes: episodes[];
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+  vote_average: number;
+};

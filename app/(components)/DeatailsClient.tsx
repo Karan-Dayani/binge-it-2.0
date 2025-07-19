@@ -1,10 +1,10 @@
 "use client";
 
+import { cast_crew, credits, item, season, trailer } from "@/interfaces";
 import Image from "next/image";
-import { cast_crew, credits, item, trailer } from "@/interfaces";
-import { IoStar } from "react-icons/io5";
-import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Ticker from "./Ticker";
 
 export default function DetailCardClient({
@@ -13,14 +13,19 @@ export default function DetailCardClient({
   credits,
   recomendations,
   trailer,
+  season,
 }: {
   data: item;
   mediaType: string;
   credits?: credits;
   recomendations?: item[];
   trailer?: trailer[];
+  season?: season;
 }) {
+  const router = useRouter();
   const isPerson = mediaType === "person";
+
+  const episodes = season?.episodes;
 
   const [trailerOpen, setTrailerOpen] = useState(false);
   const officialTrailer: trailer = (trailer ?? []).filter(
@@ -168,12 +173,8 @@ export default function DetailCardClient({
             </p>
             <p>{genres}</p>
           </div>
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            {!isPerson && (
-              <>
-                <IoStar className="size-5 fill-yellow-300" /> {vote}
-              </>
-            )}
+          <div className="flex items-center justify-center md:justify-start gap-2 text-yellow-400 text-lg">
+            {!isPerson && <>★ {vote}</>}
           </div>
           <div className="mt-4 leading-relaxed text-justify">
             {displayText}
@@ -224,6 +225,71 @@ export default function DetailCardClient({
           </div>
         </div>
       </div>
+
+      {/* Episodes Section */}
+      {mediaType === "tv" && (
+        <section className="my-16 px-4 sm:px-6 lg:px-12">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-2xl font-semibold text-white mb-6">Episodes</h2>
+            {data.number_of_seasons && data.number_of_seasons > 0 && (
+              <select
+                className="bg-card text-white text-sm px-3 py-2 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent-primary"
+                onChange={(e) => {
+                  const selectedSeason = Number(e.target.value);
+                  router.push(`?season=${selectedSeason}`);
+                }}
+                defaultValue={1}
+              >
+                {Array.from({ length: data.number_of_seasons }, (_, index) => (
+                  <option key={index} value={index + 1}>
+                    Season {index + 1}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+          <div className="flex overflow-x-auto gap-4 no-scrollbar py-2">
+            {episodes?.map((ep) => (
+              <div
+                key={ep.id}
+                className="flex-none w-64 bg-card shadow-md hover:shadow-lg transition"
+              >
+                {/* Image */}
+                <div className="relative w-full h-36 overflow-hidden">
+                  <Image
+                    src={
+                      ep.still_path
+                        ? `https://image.tmdb.org/t/p/original${ep.still_path}`
+                        : "/fallback.jpeg"
+                    }
+                    alt={ep.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="p-3 text-white flex flex-col justify-between h-[140px]">
+                  <div>
+                    <h3 className="text-sm font-semibold mb-1 line-clamp-1">
+                      {ep.episode_number}. {ep.name}
+                    </h3>
+                    <p className="text-xs text-gray-400 line-clamp-2">
+                      {ep.overview}
+                    </p>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
+                    <span>{ep.runtime} min</span>
+                    <span className="text-yellow-400 font-medium">
+                      ★ {ep.vote_average.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Cast Section */}
       {!isPerson && (credits?.cast?.length ?? 0) > 0 && (

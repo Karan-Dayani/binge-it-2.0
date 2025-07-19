@@ -9,19 +9,24 @@ import {
   getTvCredits,
   getTvDetails,
   getTvRecommendations,
+  getTvSeason,
   getTvTrailer,
 } from "@/app/api/api";
 import { credits, item, trailer } from "@/interfaces";
 
 export default async function DetailsPage({
   params,
+  searchParams,
 }: {
   params: { mediatype: string; id: string };
+  searchParams: { season?: string };
 }) {
   let data: item | undefined = undefined;
   let credits: credits | undefined = undefined;
   let recomendations: { results: item[] } | undefined = undefined;
   let trailer: { id: string; results: trailer[] } | undefined = undefined;
+  let season: undefined = undefined;
+  const seasonNumber = (await searchParams.season) || "1";
 
   if (params.mediatype === "movie") {
     data = await getMovieDetails(params.id);
@@ -33,6 +38,7 @@ export default async function DetailsPage({
     credits = await getTvCredits(params.id);
     recomendations = await getTvRecommendations(params.id);
     trailer = await getTvTrailer(params.id);
+    season = await getTvSeason(params.id, Number(seasonNumber));
   } else if (params.mediatype === "person") {
     data = await getPersonDetails(params.id);
     credits = await getPersonCredits(params.id);
@@ -47,6 +53,7 @@ export default async function DetailsPage({
       credits={credits}
       recomendations={recomendations?.results}
       trailer={trailer?.results}
+      season={season}
     />
   );
 }

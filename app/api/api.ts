@@ -206,3 +206,14 @@ export async function getTvTrailer(id: string) {
     throw error;
   }
 }
+
+export async function getTvSeason(id: string, season: number) {
+  const url = `https://api.themoviedb.org/3/tv/${id}/season/${season}`;
+  try {
+    const res = await fetch(url, options);
+    const data = res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
